@@ -117,9 +117,17 @@ app.get("/health", (req, res) => {
   res.status(200).send("ok");
 });
 
+app.get("/favicon.ico", (req, res) => {
+  res.status(204).end();
+});
+
 app.get("/", asyncHandler(async (req, res) => {
   await renderHome(req, res);
 }));
+
+app.get("/new", (req, res) => {
+  res.render("new.ejs");
+});
 
 app.post("/add", asyncHandler(async (req, res) => {
   const input = req.body["country"]?.trim();
@@ -182,7 +190,7 @@ app.post("/add", asyncHandler(async (req, res) => {
 
 app.post("/user", asyncHandler(async (req, res) => {
   if (req.body.add === "new") {
-    res.render("new.ejs");
+    res.redirect("/new");
   } else {
     saveSelectedUser(res, req.body.user);
     res.redirect("/");
